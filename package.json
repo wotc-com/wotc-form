@@ -172,5 +172,9 @@
         }
       ]
     ]
+  },
+  "dependencies": {
+    "@jsonforms/core": "^3.1.0",
+    "jquery": "^3.7.1"
   }
 }

@@ -1,2 +1,4 @@
-import App from './App';
-export default App;
+import WotcForm from './WotcForm';
+import * as jsonform from '@jsonforms/core';
+
+console.log(jsonform);
