@@ -1,21 +1,19 @@
 const Path = require('path');
+const Webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
+  target: 'web',
   entry: {
     forms: Path.resolve(__dirname, '../src/scripts/index.js'),
   },
   output: {
     path: Path.join(__dirname, '../build'),
     filename: 'js/[name].js',
+    library: 'WotcForm',
+    libraryTarget: 'var'
   },
-  /*optimization: {
-    splitChunks: {
-      chunks: 'all',
-      name: false,
-    },
-  },*/
   plugins: [
     new CopyWebpackPlugin({
       patterns: [{ from: Path.resolve(__dirname, '../public'), to: 'public' }],
