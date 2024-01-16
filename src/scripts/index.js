@@ -16,8 +16,8 @@ const schema = person.schema;
 const uischema = person.uischema;
 const initialData = person.data;
 
-function WotcForm(options) {
-
+function WotcForm({options}) {
+	
   const [data, setData] = useState(options.data || {});
   return (
 	
@@ -37,7 +37,10 @@ function WotcForm(options) {
 }
 
 export function init(elementId, options) {
-	const root = createRoot(document.getElementById(elementId || 'wotc-form'));
+	const rootElement = document.getElementById(elementId || 'wotc-form');
+	
+	if (!rootElement) return;
+	const root = createRoot(rootElement);
 	root.render(<WotcForm options={options} />);
 };
 
