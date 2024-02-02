@@ -43,17 +43,18 @@ export function init(elementId, options) {
 	const rootElement = document.getElementById(elementId || 'wotc-form');
 	
 	if (!rootElement) return;
+	
 	const root = createRoot(rootElement);
-	$.get('http://localhost/api/v1/589423844/wotc-form').done(function(res) {
+	const url = `http://localhost/api/v1/${options.groupId}/${options.formId}`;
+	$.get(url).done(function(res) {
+		rootElement.method = "POST";
+		rootElement.action = url;
 		uischema = res.uischema;
 		schema = res.schema;
 		root.render(<WotcForm options={options} />);
+		$(rootElement).append(`<input type="hidden" name="returnUrl" value="${options.returnUrl}" />`);
 	});
 	
 };
 
 export default WotcForm;
-
-$(function() {
-	init();
-});
