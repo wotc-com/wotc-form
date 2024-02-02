@@ -12,11 +12,14 @@ import {
   materialCells,
 } from '@jsonforms/material-renderers';
 
-const schema = person.schema;
-const uischema = person.uischema;
+var schema = person.schema;
+var uischema = person.uischema;
 const initialData = person.data;
 
 function WotcForm({options}) {
+	
+	console.log(schema);
+	console.log(uischema);
 	
   const [data, setData] = useState(options.data || {});
   return (
@@ -41,7 +44,12 @@ export function init(elementId, options) {
 	
 	if (!rootElement) return;
 	const root = createRoot(rootElement);
-	root.render(<WotcForm options={options} />);
+	$.get('http://localhost/api/v1/589423844/wotc-form').done(function(res) {
+		uischema = res.uischema;
+		schema = res.schema;
+		root.render(<WotcForm options={options} />);
+	});
+	
 };
 
 export default WotcForm;

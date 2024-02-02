@@ -8,5 +8,19 @@
 </head>
 <body>
   <div id="specialForm"></div>
+  <script>
+    (function initForms() {
+      if (!window.WotcForm) {
+        setTimeout(function() {
+          initForms();
+        }, 100);
+      } else {
+        WotcForm.init('specialForm', {
+          groupId: 1111,
+          formId: 1111
+        });
+      }
+    })();
+  </script>
 </body>
 </html>
