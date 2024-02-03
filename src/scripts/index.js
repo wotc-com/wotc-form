@@ -1,20 +1,18 @@
 import '../styles/index.scss';
 import $ from 'jquery';
 import { createRoot } from 'react-dom/client';
-import wotcFields from './wotc.js';
 
 import React, { useState } from 'react';
 import { JsonForms } from '@jsonforms/react';
 
-import { person } from '@jsonforms/examples';
 import {
   materialRenderers,
   materialCells,
 } from '@jsonforms/material-renderers';
 
-var schema = person.schema;
-var uischema = person.uischema;
-const initialData = person.data;
+var schema;
+var uischema;
+var rootElementId;
 
 function WotcForm({options}) {
 	
@@ -23,7 +21,7 @@ function WotcForm({options}) {
 	
   const [data, setData] = useState(options.data || {});
   return (
-	
+	<>
 	  <JsonForms
 		schema={schema}
 		uischema={uischema}
@@ -34,25 +32,45 @@ function WotcForm({options}) {
 			setData(e.data);
 		}}
 	  />
-	
+	  <button type="submit" className={options.buttonClass}>Submit</button>
+	</>
   );
   
 }
 
+document.addEventListener('submit', (e) => {
+	// Store reference to form to make later code easier to read
+	const form = e.target;
+	
+	$(form).find('input, select, textarea').each(function() {
+		$(this).attr('name', $(this).attr('id'));
+	});
+
+	$.ajax({
+	  type: "POST",
+	  url: form.action,
+	  data: new FormData(form)
+	});
+
+	// Prevent the default form submit
+	e.preventDefault();
+});
+
 export function init(elementId, options) {
 	const rootElement = document.getElementById(elementId || 'wotc-form');
-	
+	rootElementId = elementId;
 	if (!rootElement) return;
 	
 	const root = createRoot(rootElement);
-	const url = `http://localhost/api/v1/${options.groupId}/${options.formId}`;
+	const base = options.baseUrl || 'https://app.wotc.com/api/v1';
+	const url = `${base}/${options.groupId}/${options.formId}`;
 	$.get(url).done(function(res) {
 		rootElement.method = "POST";
 		rootElement.action = url;
 		uischema = res.uischema;
 		schema = res.schema;
 		root.render(<WotcForm options={options} />);
-		$(rootElement).append(`<input type="hidden" name="returnUrl" value="${options.returnUrl}" />`);
+		
 	});
 	
 };
