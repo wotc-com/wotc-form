@@ -47,7 +47,7 @@ document.addEventListener('submit', (e) => {
 	});
 
 	$.ajax({
-	  type: "POST",
+	  method: "POST",
 	  url: form.action,
 	  data: new FormData(form)
 	});
