@@ -46,10 +46,9 @@ document.addEventListener('submit', (e) => {
 		$(this).attr('name', $(this).attr('id'));
 	});
 
-	$.ajax({
-	  method: "POST",
-	  url: form.action,
-	  data: new FormData(form)
+	fetch(form.action, {
+		method: form.method,
+		body: new FormData(form),
 	});
 
 	// Prevent the default form submit
