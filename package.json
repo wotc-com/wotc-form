@@ -1,6 +1,6 @@
 {
   "name": "wotc-form",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "A javascript snippet 8850 form for wotc.com.",
   "scripts": {
     "lint": "npm run lint:styles; npm run lint:scripts",

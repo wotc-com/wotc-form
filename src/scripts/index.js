@@ -42,17 +42,21 @@ document.addEventListener('submit', (e) => {
 	// Store reference to form to make later code easier to read
 	const form = e.target;
 	
-	$(form).find('input, select, textarea').each(function() {
-		$(this).attr('name', $(this).attr('id'));
-	});
-
-	fetch(form.action, {
-		method: form.method,
-		body: new FormData(form),
-	});
-
-	// Prevent the default form submit
-	e.preventDefault();
+	if (form.id === rootElementId) {
+	
+		$(form).find('input, select, textarea').each(function() {
+			$(this).attr('name', $(this).attr('id'));
+		});
+	
+		fetch(form.action, {
+			method: form.method,
+			body: new FormData(form),
+		});
+	
+		// Prevent the default form submit
+		e.preventDefault();
+		
+	}
 });
 
 export function init(elementId, options) {
