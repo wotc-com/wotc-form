@@ -2,12 +2,6 @@
 
 A lightweight foundation for your next webpack based frontend project.
 
-### Installation
-
-```sh
-npm i wotc-form
-```
-
 ### Basic Implementation
 
 ```html
@@ -21,7 +15,13 @@ npm i wotc-form
 </script>
 ```
 
-### React
+## React
+
+### Installation
+
+```sh
+npm i wotc-form
+```
 
 ### Start Dev Server
 
