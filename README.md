@@ -1,23 +1,32 @@
-# Webpack Frontend Starterkit
+# WOTC.com JavaScript Screening Form
 
 A lightweight foundation for your next webpack based frontend project.
 
 ### Installation
 
 ```sh
-npm install
+npm i wotc-form
 ```
+
+### Basic Implementation
+
+```html
+<form id="specialForm"></form>
+<script src="https://cdn.jsdelivr.net/gh/wotc-com/wotc-form@master/build/js/forms.js"></script>
+<script>
+	WotcForm.init('specialForm', {
+	  groupId: 484158277,
+	  formId: 589972586
+	});
+</script>
+```
+
+### React
 
 ### Start Dev Server
 
 ```sh
 npm start
-```
-
-### Build Prod Version
-
-```sh
-npm run build
 ```
 
 ### Features:
@@ -28,4 +37,3 @@ npm run build
 - Autoprefixing of browserspecific CSS rules via [postcss](https://postcss.org/) and [postcss-preset-env](https://github.com/csstools/postcss-preset-env)
 - Style Linting via [stylelint](https://stylelint.io/)
 
-When you run `npm run build` we use the [mini-css-extract-plugin](https://github.com/webpack-contrib/mini-css-extract-plugin) to move the css to a separate file. The css file gets included in the head of the `index.html`.
