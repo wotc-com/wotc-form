@@ -4,6 +4,11 @@ import { createRoot } from 'react-dom/client';
 
 import React, { useState } from 'react';
 import { JsonForms } from '@jsonforms/react';
+import { createAjv } from '@jsonforms/core';
+
+const ajvInstance = createAjv({allErrors: true});
+
+require("ajv-errors")(ajvInstance, {singleError: true});
 
 import {
   materialRenderers,
@@ -13,24 +18,21 @@ import {
 var schema;
 var uischema;
 var rootElementId;
+var appRoot;
 
 function WotcForm({options}) {
-	
-	console.log(schema);
-	console.log(uischema);
 	
   const [data, setData] = useState(options.data || {});
   return (
 	<>
 	  <JsonForms
+	    ajv={ajvInstance}
 		schema={schema}
 		uischema={uischema}
 		data={data}
 		renderers={materialRenderers}
 		cells={materialCells}
-		onChange={function(e) {
-			setData(e.data);
-		}}
+		onChange={({ errors, data }) => {setData(data); console.log(errors);}}
 	  />
 	  <button type="submit" className={options.buttonClass}>Submit</button>
 	</>
@@ -38,23 +40,38 @@ function WotcForm({options}) {
   
 }
 
+function successfulSubmission(form) {
+	$(form).remove();
+}
+
 document.addEventListener('submit', (e) => {
 	// Store reference to form to make later code easier to read
 	const form = e.target;
 	
 	if (form.id === rootElementId) {
-	
+		e.preventDefault();
 		$(form).find('input, select, textarea').each(function() {
 			$(this).attr('name', $(this).attr('id'));
 		});
-	
-		fetch(form.action, {
-			method: form.method,
-			body: new FormData(form),
+				
+		$.ajax({
+			headers: {          
+				Accept: "text/json; charset=utf-8",         
+				"Content-Type": "text/json; charset=utf-8"   
+			  },
+			url: form.action,
+			type: form.method,
+			data: $(form).serializeArray(),
+			success: function() {
+				successfulSubmission(form);
+			},
+			error: function(jXhr, status, error) {
+				
+			}
 		});
 	
 		// Prevent the default form submit
-		e.preventDefault();
+		
 		
 	}
 });
@@ -64,7 +81,7 @@ export function init(elementId, options) {
 	rootElementId = elementId;
 	if (!rootElement) return;
 	
-	const root = createRoot(rootElement);
+	appRoot = createRoot(rootElement);
 	const base = options.baseUrl || 'https://app.wotc.com/api/v1';
 	const url = `${base}/${options.groupId}/${options.formId}`;
 	$.get(url).done(function(res) {
@@ -72,8 +89,7 @@ export function init(elementId, options) {
 		rootElement.action = url;
 		uischema = res.uischema;
 		schema = res.schema;
-		root.render(<WotcForm options={options} />);
-		
+		appRoot.render(<WotcForm options={options} />);
 	});
 	
 };
