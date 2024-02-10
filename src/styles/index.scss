@@ -1,7 +1,7 @@
-$body-color: slateblue;
-
 body {
-  color: $body-color;
-  font-family: sans-serif;
-  text-align: center;
+  font-family: inherit;
+  
+  .MuiStepper-root {
+    margin-bottom: 30px;
+  }
 }

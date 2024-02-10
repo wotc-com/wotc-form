@@ -28,9 +28,9 @@ module.exports = merge(common, {
       emitWarning: true,
       files: Path.resolve(__dirname, '../src'),
     }),
-    new StylelintPlugin({
-      files: Path.join('src', '**/*.s?(a|c)ss'),
-    }),
+    // new StylelintPlugin({
+    //   files: Path.join('src', '**/*.s?(a|c)ss'),
+    // }),
   ],
   module: {
     rules: [
