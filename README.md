@@ -1,6 +1,6 @@
 # WOTC.com JavaScript Screening Form
 
-A lightweight foundation for your next webpack based frontend project.
+An embedded JavaScript snippet to generate the WOTC.com screening form directly in your website or application.
 
 ### Basic Implementation
 
@@ -9,8 +9,12 @@ A lightweight foundation for your next webpack based frontend project.
 <script src="https://cdn.jsdelivr.net/gh/wotc-com/wotc-form@master/build/js/forms.js"></script>
 <script>
 	WotcForm.init('specialForm', {
-	  groupId: 484158277,
-	  formId: 589972586
+	  groupId: 484158277, // required
+	  formId: 589972586, // required
+	  data: { // optional to prefill form
+	    name: 'Bob Hope',
+	    dob: '1903-05-29'
+	  }
 	});
 </script>
 ```
@@ -22,6 +26,8 @@ A lightweight foundation for your next webpack based frontend project.
 ```sh
 npm i wotc-form
 ```
+
+> NOTE: Importing directly to a React project and using a react component has not been tested. Currently only testing has been direct front-end implementation.
 
 ### Start Dev Server
 
