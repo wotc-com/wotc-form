@@ -2,6 +2,8 @@
 
 An embedded JavaScript snippet to generate the WOTC.com screening form directly in your website or application.
 
+![image](https://github.com/wotc-com/wotc-form/assets/6423115/91e98363-3df4-4263-80a2-3a4a1c9fb22c)
+
 ### Basic Implementation
 
 ```html
