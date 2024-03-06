@@ -16,15 +16,7 @@ export const WotcFormInner = (_props) => {
     // NOTE: JsonForms requires parent container!
     return (
       <div>
-        <JsonForms
-          ajv={ajvInstance}
-          data={null} //
-          schema={data.data.schema}
-          uischema={data.data.uischema}
-          renderers={data.data.renderers}
-          cells={data.data.cells}
-          onChange={onChange}
-        />
+        <JsonForms ajv={ajvInstance} data={{}} {...data.data} onChange={onChange} />
         {debug ? <pre>{JSON.stringify(output, null, 2)}</pre> : null}
       </div>
     );
