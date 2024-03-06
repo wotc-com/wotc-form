@@ -1,28 +1,36 @@
 import { createAjv } from '@jsonforms/core';
 import { JsonForms } from '@jsonforms/react';
+import { JsonFormsStyleContext } from '@jsonforms/vanilla-renderers';
 import CircularProgress from '@mui/material/CircularProgress';
 import React, { useState } from 'react';
 import { useFormData } from '../utils/useFormData';
 
 const ajvInstance = createAjv();
 
-export const WotcFormInner = (_props) => {
+export const WotcFormInner = ({ defaults = {}, data: _data = {} }: { defaults: Record<string, unknown>; data: Record<string, unknown> }) => {
   const debug = new URLSearchParams(document.location.search).has('debug');
-  const data = useFormData();
+  const config = useFormData();
   const [output, setOutput] = useState({});
-  const onChange = ({ errors, data }) => setOutput({ data, errors });
+  const [data, setData] = useState({ ...defaults, ..._data });
+  const onChange = ({ errors, data }) => {
+    setData(data);
+    setOutput({ data, errors });
+  };
+  const styles = [];
 
-  if (data.isSuccess) {
-    // NOTE: JsonForms requires parent container!
+  if (config.isSuccess) {
+    // NOTE: JsonForms requires parent div!
     return (
       <div>
-        <JsonForms ajv={ajvInstance} data={{}} {...data.data} onChange={onChange} />
+        <JsonFormsStyleContext.Provider value={{ styles }}>
+          <JsonForms ajv={ajvInstance} {...config.data} data={data} onChange={onChange} />
+        </JsonFormsStyleContext.Provider>
         {debug ? <pre>{JSON.stringify(output, null, 2)}</pre> : null}
       </div>
     );
   }
 
-  if (data.isError) {
+  if (config.isError) {
     return (
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: 400 }}>
         <h3>There was an issue loading the form. Please refresh your browser. Thanks.</h3>
