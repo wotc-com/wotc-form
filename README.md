@@ -26,7 +26,7 @@ An embedded JavaScript snippet to generate the WOTC.com screening form directly 
 ### Installation
 
 ```sh
-npm i wotc-form
+yarn
 ```
 
 > NOTE: Importing directly to a React project and using a react component has not been tested. Currently only testing has been direct front-end implementation.
@@ -34,7 +34,7 @@ npm i wotc-form
 ### Start Dev Server
 
 ```sh
-npm start
+yarn start
 ```
 
 ### Features:

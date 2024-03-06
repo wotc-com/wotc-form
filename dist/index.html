@@ -1,0 +1,164 @@
+<html>
+  <head>
+    <style>
+      html {
+        font-family: Arial, Helvetica, sans-serif;
+      }
+      .wotcdemo-flex-row {
+        display: flex;
+        gap: 16px;
+      }
+      .wotcdemo-flex-column {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+      .justify-content-between {
+        justify-content: space-between;
+      }
+      .wotcdemo-p-1 {
+        padding: 16px;
+      }
+      .wotcdemo-p-2 {
+        padding: 32px;
+      }
+      .border-bottom {
+        border-bottom: 1px solid #ccc;
+      }
+      main {
+        max-width: 1024px;
+        margin: 0 auto;
+      }
+      section.wotcdemo {
+        clear: both;
+      }
+      .wotcdemo-pre {
+        background-color: #222;
+        color: orange;
+        padding: 16px;
+        border-radius: 8px;
+        overflow: auto;
+      }
+      label.wotcdemo-label {
+        display: block;
+        text-wrap: nowrap;
+      }
+      input[type='text'].wotcdemo-input {
+        display: block;
+        width: 100%;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        padding: 8px;
+      }
+      .card {
+        background-color: #eee;
+        border-radius: 8px;
+        padding: 16px;
+      }
+      .table {
+        border-spacing: 10px;
+        border-collapse: separate;
+      }
+      .table td {
+        padding: 4px 0;
+      }
+      button.wotcdemo {
+        padding: 8px;
+        min-width: 100px;
+      }
+    </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1"><script defer src="WotcForm.js"></script></head>
+  <body>
+    <nav class="wotcdemo-flex-row wotcdemo-p-1 border-bottom justify-content-between">
+      <h3>WOTC Form Widget</h3>
+      <div class="wotcdemo-flex-row">
+        <h5>About</h5>
+        <h5>Contact</h5>
+      </div>
+    </nav>
+    <main class="wotcdemo-flex-column">
+      <section class="wotcdemo wotcdemo-flex-column">
+        <div>
+          <h1>Template</h1>
+          <p>Easily integrate the WOTC form into your website. Here's an example of the actual form...</p>
+        </div>
+      </section>
+      <section class="wotcdemo wotcdemo-p-2">
+        <div class="wotc-form-widget" data-config="groupId=484158277&formId=2018243164&baseUrl=http%3A%2F%2Fapi.localhost%2Fv1&buttonClass=btn%20btn-primary"></div>
+      </section>
+      <section class="wotcdemo wotcdemo-flex-column">
+        <div>
+          <h1>How to Add the WOTC Form</h1>
+          <p>Follow the instructions below to add the WOTC from to your website.</p>
+        </div>
+      </section>
+      <section class="wotcdemo wotcdemo-flex-column">
+        <ol>
+          <li>
+            <p>Add a &lt;div&gt; with the specified class name and attributes where you want the form to appear. Here's an example:</p>
+            <form id="widget-form" class="wotcdemo-flex-column card" onsubmit="updateJs(event)">
+              <table class="table">
+                <tbody>
+                  <tr>
+                    <td style="width: 1%"><label>Group ID</label></td>
+                    <td><input class="wotcdemo-input" type="text" name="groupId" value="484158277" /></td>
+                  </tr>
+                  <tr>
+                    <td><label class="wotcdemo-label">Form ID</label></td>
+                    <td><input class="wotcdemo-input" type="text" name="formId" value="2018243164" /></td>
+                  </tr>
+                  <tr>
+                    <td><label class="wotcdemo-label">Base Url</label></td>
+                    <td><input class="wotcdemo-input" type="text" name="baseUrl" value="http://api.localhost/v1" /></td>
+                  </tr>
+                  <tr>
+                    <td><label class="wotcdemo-label">Button Class</label></td>
+                    <td><input class="wotcdemo-input" type="text" name="buttonClass" value="btn btn-primary" /></td>
+                  </tr>
+                  <tr>
+                    <td colspan="2" style="text-align: right"><button class="wotcdemo" type="submit">Submit</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </form>
+            <pre class="wotcdemo-pre" id="example-div"></pre>
+            <br /><br />
+          </li>
+          <li>
+            <p>Add the WOTC widget script to the bottom of your page:</p>
+            <pre class="wotcdemo-pre" id="example-script"></pre>
+          </li>
+        </ol>
+      </section>
+      <div style="height:150px" />
+    </main>
+    <script>
+      function escapeHtml(text) {
+        const map = {
+          '&': '&amp;',
+          '<': '&lt;',
+          '>': '&gt;',
+          '"': '&quot;',
+          "'": '&#39;'
+        };
+
+        return text.replace(/[&<>"']/g, function (m) {
+          return map[m];
+        });
+      }
+
+      function updateJs(e) {
+        e.preventDefault();
+        const form = new FormData(e.target);
+        const params = new URLSearchParams(form);
+        const body = params.toString();
+        $exampleDiv.innerHTML = escapeHtml(`<div class="wotc-form-widget" data-config="${body}"></div>`);
+      }
+
+      $exampleDiv = document.getElementById('example-div');
+      updateJs({ target: document.getElementById('widget-form'), preventDefault: () => {} });
+      document.getElementById('example-script').innerHTML = escapeHtml('<script src="https://widget.wotc.com/WotcForm.js"></scr' + 'ipt>');
+    </script>
+    <script src="/WotcForm.js"></script>
+  </body>
+</html>
