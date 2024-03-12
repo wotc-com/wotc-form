@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import fetch from 'cross-fetch';
 
 const fetchData = async () => {
+  // TODO: baseUrl should be configurable and default to this
   const response = await fetch(process.env.BASE_URL);
 
   if (!response.ok) {

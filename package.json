@@ -19,9 +19,12 @@
   },
   "license": "MIT",
   "author": "wotc.com",
-  "main": "src/scripts/index.js",
+  "main": "dist/WotcForm.js",
+  "module": "dist/WotcForm.js",
+  "files":["dist"],
+  "private": false,
   "scripts": {
-    "build": "webpack serve --open --mode production",
+    "build": "webpack --mode production",
     "lint": "npm run lint:styles; npm run lint:scripts",
     "lint:scripts": "eslint src",
     "lint:styles": "stylelint src",
@@ -82,5 +85,9 @@
     "webpack": "^5.90.1",
     "webpack-cli": "^5.0.0",
     "webpack-dev-server": "^4.11.1"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   }
 }
