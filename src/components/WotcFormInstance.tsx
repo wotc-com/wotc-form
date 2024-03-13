@@ -11,6 +11,7 @@ export interface IWotcConfig {
   data: Record<string, unknown>;
   integration: string;
   submission_queue: string;
+  demo: string;
 }
 
 export const DEFAULT_CONFIG: IWotcConfig = {
@@ -21,7 +22,8 @@ export const DEFAULT_CONFIG: IWotcConfig = {
   defaults: {},
   data: {},
   integration: '',
-  submission_queue: ''
+  submission_queue: '',
+  demo: '1'
 };
 
 export const WotcFormInstance = ({ config }: { config: Partial<IWotcConfig> }) => {

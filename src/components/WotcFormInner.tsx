@@ -13,7 +13,7 @@ const ajvInstance = createAjv();
 
 export const WotcFormInner = ({ config: config }: { config: Partial<IWotcConfig> }) => {
   const debug = new URLSearchParams(document.location.search).has('debug');
-  const formData = useFormData();
+  const formData = useFormData(config);
   const [output, setOutput] = useState({});
   const [data, setData] = useState({ ...(config?.defaults ?? {}), ...(config?.data ?? {}) });
   const styles = [];
@@ -38,7 +38,6 @@ export const WotcFormInner = ({ config: config }: { config: Partial<IWotcConfig>
     mutation.mutate(data);
   };
 
-
   if (mutation.isPending) {
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: 400 }}>
       <CircularProgress />
@@ -53,19 +52,6 @@ export const WotcFormInner = ({ config: config }: { config: Partial<IWotcConfig>
       </div>
     );
   }
-
-  // if (mutation.isError) {
-  //   return (
-  //     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: 400 }}>
-  //       <div>
-  //         <h3>There was an issue submitting the form. Please try again.</h3>
-  //         <Button variant='contained' onClick={() => mutation.reset()}>
-  //           OK
-  //         </Button>
-  //       </div>
-  //     </div>
-  //   );
-  // }
 
   if (formData.isSuccess) {
     // NOTE: JsonForms requires parent div!
@@ -99,7 +85,7 @@ export const WotcFormInner = ({ config: config }: { config: Partial<IWotcConfig>
             <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: 10 }}>
               <div style={{ maxWidth: 400, textAlign: 'center' }}>
                 <h3>There was an issue submitting the form.</h3>
-                <h3>Please try again.</h3>
+                <h4>Please try again.</h4>
                 <Button variant='contained' onClick={() => mutation.reset()}>
                   OK
                 </Button>
@@ -116,7 +102,11 @@ export const WotcFormInner = ({ config: config }: { config: Partial<IWotcConfig>
   if (formData.isError) {
     return (
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: 400 }}>
-        <h3>There was an issue loading the form. Please refresh your browser. Thanks.</h3>
+        <div style={{ textAlign: 'center' }}>
+          <h3>
+            There was an issue loading the form. <br /> Please refresh your browser.
+          </h3>
+        </div>
       </div>
     );
   }

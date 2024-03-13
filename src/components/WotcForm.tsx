@@ -28,7 +28,11 @@ export const renderWidget = ($el: HTMLDivElement) => {
     } catch (err) {
       //
     }
-    createRoot($el).render(<WotcFormInstance config={config} />);
+    const root = createRoot($el);
+    // root.unmount();
+    // if ($el.hasOwnProperty('_reactRootContainer')) {
+    // }
+    root.render(<WotcFormInstance config={config} />);
   }
 };
 

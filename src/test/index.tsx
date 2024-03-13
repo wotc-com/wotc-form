@@ -1,4 +1,4 @@
-import { Box, Button, Card, CardContent, TextField } from '@mui/material';
+import { Box, Button, Card, CardContent, Checkbox, FormControlLabel, FormGroup, TextField } from '@mui/material';
 import React, { useEffect, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { DEFAULT_CONFIG, IWotcConfig } from '../components/WotcFormInstance';
@@ -22,12 +22,20 @@ const Page = () => {
   const $example_div = useRef<HTMLPreElement>();
   const $example_script = useRef<HTMLPreElement>();
   const [exampleDiv, setExampleDiv] = useState('');
-  const [config, setConfig] = useState(DEFAULT_CONFIG);
+  const [input, setInput] = useState(DEFAULT_CONFIG);
+  const [output, setOutput] = useState(DEFAULT_CONFIG);
+  const [demoChecked, setDemoChecked] = useState(false);
 
   const onChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     const delta = { [e.currentTarget.name]: e.currentTarget.value };
-    setConfig((prev) => ({ ...prev, ...delta }));
+    setInput((prev) => ({ ...prev, ...delta }));
   };
+
+  // const onChangeDemo = (e:ChangeEvent<HTMLInputElement>, checked: boolean) => {
+  //   e;
+  //    onChange(checked ? '1' : '0');
+  //    setInput((prev) => ({ ...prev, {demo: checked ? '1' : '0'} }));
+  // }
 
   const onSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
@@ -37,18 +45,25 @@ const Page = () => {
         ssi_benefit: true
       }
     };
-    setConfig((prev) => ({ ...prev, ...delta }));
-
-    if (window?.WotcForm) {
-      WotcForm.renderWidget(document.querySelector('.wotc-form-widget'));
-    }
+    console.log({ input });
+    setOutput(input);
   };
 
   useEffect(() => {
+    setInput((prev) => ({ ...prev, demo: demoChecked ? '1' : '0' }));
+  }, [demoChecked]);
+
+  useEffect(() => {
+    // this is strange to make the layout look a little better
     setExampleDiv(`<div 
   class="wotc-form-widget" 
-  data-config='${JSON.stringify(config, null, 4)}'>
+  data-config='${JSON.stringify(output, null, 4)}'>
 </div>`);
+
+    if (window?.WotcForm) {
+      document.querySelector<HTMLDivElement>('.wotc-form-widget').dataset.config = JSON.stringify(output);
+      WotcForm.renderWidget(document.querySelector('.wotc-form-widget'));
+    }
     //     // const form = new FormData(e.target);
     //     const config = Object.fromEntries(new FormData($form.current)) as Partial<IWotcConfig>;
     //     config.data = {
@@ -62,7 +77,7 @@ const Page = () => {
     //     $example_div.current.innerHTML = escapeHtml(`<div class="wotc-form-widget" data-config='${JSON.stringify(config)}'></div>`);
     //     // $example_script.current.innerHTML = escapeHtml('<script src="https://widget.wotc.com/WotcForm.js"></script>');
     //     // WotcForm.renderWidget(document.querySelector('.wotc-form-widget'));
-  }, [config]);
+  }, [output]);
 
   return (
     <>
@@ -93,16 +108,19 @@ const Page = () => {
           <ol>
             <li>
               <p>Add a &lt;div&gt; with the specified class name and attributes where you want the form to appear. Here's an example:</p>
-
+              <p>{demoChecked ? 'demoChecked' : 'xxx'}</p>
               <Card sx={{ minWidth: 275 }}>
                 <CardContent>
                   <Box ref={$form} component='form' onSubmit={onSubmit} gap={3} display={'flex'} flexDirection={'column'} noValidate autoComplete='off'>
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
-                      <TextField fullWidth label='Entity ID' variant='outlined' name='entityId' value={config.entityId} onChange={onChange} />
-                      <TextField label='Form ID' variant='outlined' name='formId' value={config.formId} onChange={onChange} />
-                      <TextField label='Outlined' variant='outlined' name='baseUrl' value={config.baseUrl} onChange={onChange} />
-                      <TextField label='Button Class' variant='outlined' name='buttonClass' value={config.buttonClass} onChange={onChange} />
-                      <TextField label='Integration' variant='outlined' name='integration' value={config.integration} onChange={onChange} />
+                      <TextField fullWidth label='Entity ID' variant='outlined' name='entityId' value={input.entityId} onChange={onChange} />
+                      <TextField label='Form ID' variant='outlined' name='formId' value={input.formId} onChange={onChange} />
+                      <TextField label='Outlined' variant='outlined' name='baseUrl' value={input.baseUrl} onChange={onChange} />
+                      <TextField label='Button Class' variant='outlined' name='buttonClass' value={input.buttonClass} onChange={onChange} />
+                      <TextField label='Integration' variant='outlined' name='integration' value={input.integration} onChange={onChange} />
+                      <FormGroup>
+                        <FormControlLabel control={<Checkbox checked={demoChecked} name='demo' value={demoChecked ? '1' : '0'} onChange={(e) => setDemoChecked(e.currentTarget.checked)} />} label='Use Demo Data' />
+                      </FormGroup>
                     </div>
                     <Button variant='contained' type='submit'>
                       Submit

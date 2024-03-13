@@ -21,7 +21,9 @@
   "author": "wotc.com",
   "main": "dist/WotcForm.js",
   "module": "dist/WotcForm.js",
-  "files":["dist"],
+  "files": [
+    "dist"
+  ],
   "private": false,
   "scripts": {
     "build": "webpack --mode production",
@@ -53,6 +55,7 @@
     "@tanstack/react-query": "^5.24.8",
     "@types/lodash": "^4.14.202",
     "@types/react": "^18.2.63",
+    "@types/react-dom": "^18.2.21",
     "ajv-errors": "^3.0.0",
     "babel-loader": "^9.1.0",
     "clean-webpack-plugin": "^4.0.0",
