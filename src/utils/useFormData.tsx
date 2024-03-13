@@ -6,7 +6,6 @@ import { IWotcConfig } from '../components/WotcFormInstance';
 import { buildPath } from './buildPath';
 
 export const useFormData = (config: Partial<IWotcConfig>) => {
-  console.log({ config });
   const url = config.demo === '1' ? '/jsonform.json' : buildPath([config.baseUrl, 'forms', config.entityId, config.formId]);
   return useQuery({
     queryKey: ['form-data'],

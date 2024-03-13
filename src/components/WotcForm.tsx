@@ -29,9 +29,6 @@ export const renderWidget = ($el: HTMLDivElement) => {
       //
     }
     const root = createRoot($el);
-    // root.unmount();
-    // if ($el.hasOwnProperty('_reactRootContainer')) {
-    // }
     root.render(<WotcFormInstance config={config} />);
   }
 };

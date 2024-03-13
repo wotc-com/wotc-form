@@ -317,7 +317,8 @@
             ]
           },
           "address_postcode": { "type": "string", "minLength": 5 }
-        }
+        },
+        "required": ["name", "mobile_phone", "phone", "ssn"]
       }
     }
   },

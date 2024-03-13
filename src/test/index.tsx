@@ -25,6 +25,7 @@ const Page = () => {
   const [input, setInput] = useState(DEFAULT_CONFIG);
   const [output, setOutput] = useState(DEFAULT_CONFIG);
   const [demoChecked, setDemoChecked] = useState(false);
+  const [initialDataChecked, setInitialDataChecked] = useState(false);
 
   const onChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     const delta = { [e.currentTarget.name]: e.currentTarget.value };
@@ -53,6 +54,8 @@ const Page = () => {
     setInput((prev) => ({ ...prev, demo: demoChecked ? '1' : '0' }));
   }, [demoChecked]);
 
+  useEffect(() => setDemoChecked(true), []);
+
   useEffect(() => {
     // this is strange to make the layout look a little better
     setExampleDiv(`<div 
@@ -61,22 +64,16 @@ const Page = () => {
 </div>`);
 
     if (window?.WotcForm) {
+      if (initialDataChecked) {
+        output.data = {
+          screening: {
+            ssi_benefit: true
+          }
+        };
+      }
       document.querySelector<HTMLDivElement>('.wotc-form-widget').dataset.config = JSON.stringify(output);
       WotcForm.renderWidget(document.querySelector('.wotc-form-widget'));
     }
-    //     // const form = new FormData(e.target);
-    //     const config = Object.fromEntries(new FormData($form.current)) as Partial<IWotcConfig>;
-    //     config.data = {
-    //       screening: {
-    //         ssi_benefit: true
-    //       }
-    //     };
-    //     // console.log({config});
-    //     // const params = new URLSearchParams(form);
-    //     // const body = params.toString();
-    //     $example_div.current.innerHTML = escapeHtml(`<div class="wotc-form-widget" data-config='${JSON.stringify(config)}'></div>`);
-    //     // $example_script.current.innerHTML = escapeHtml('<script src="https://widget.wotc.com/WotcForm.js"></script>');
-    //     // WotcForm.renderWidget(document.querySelector('.wotc-form-widget'));
   }, [output]);
 
   return (
@@ -120,6 +117,9 @@ const Page = () => {
                       <TextField label='Integration' variant='outlined' name='integration' value={input.integration} onChange={onChange} />
                       <FormGroup>
                         <FormControlLabel control={<Checkbox checked={demoChecked} name='demo' value={demoChecked ? '1' : '0'} onChange={(e) => setDemoChecked(e.currentTarget.checked)} />} label='Use Demo Data' />
+                      </FormGroup>
+                      <FormGroup>
+                        <FormControlLabel control={<Checkbox checked={initialDataChecked} name='demo' value={initialDataChecked ? '1' : '0'} onChange={(e) => setInitialDataChecked(e.currentTarget.checked)} />} label='Use Initial Data' />
                       </FormGroup>
                     </div>
                     <Button variant='contained' type='submit'>

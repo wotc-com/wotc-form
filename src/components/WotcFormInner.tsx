@@ -1,4 +1,4 @@
-import { createAjv } from '@jsonforms/core';
+import { JsonFormsCore, createAjv } from '@jsonforms/core';
 import { JsonForms } from '@jsonforms/react';
 import { JsonFormsStyleContext } from '@jsonforms/vanilla-renderers';
 import { Box, Button } from '@mui/material';
@@ -11,16 +11,40 @@ import { IWotcConfig } from './WotcFormInstance';
 
 const ajvInstance = createAjv();
 
+interface IFormData extends Partial<JsonFormsCore> {
+  data: Partial<{
+    screening: Record<string, boolean>;
+    personal: {
+      name: string;
+      email: string;
+      phone: string;
+      address_street: string;
+      address_city: string;
+      address_postcode: string;
+      address_state: string;
+      mobile_phone: string;
+      dob: string;
+      ssn: string;
+    };
+  }>;
+}
+
 export const WotcFormInner = ({ config: config }: { config: Partial<IWotcConfig> }) => {
   const debug = new URLSearchParams(document.location.search).has('debug');
   const formData = useFormData(config);
-  const [output, setOutput] = useState({});
-  const [data, setData] = useState({ ...(config?.defaults ?? {}), ...(config?.data ?? {}) });
+  const [output, setOutput] = useState<IFormData>({ data: { ...(config?.defaults ?? {}), ...(config?.data ?? {}) }, errors: [] });
   const styles = [];
+  
   const formAction = useMemo(() => buildPath([config.baseUrl, 'forms', config.entityId, config.integration, config.submission_queue]), [config]);
 
+  const showSubmit = useMemo(() => {
+    const hasErrors = (output?.errors ?? []).length > 0;
+    const hasPersonalInfo = JSON.stringify(output?.data?.personal ?? {}).length > 30;
+    return !hasErrors && hasPersonalInfo;
+  }, [output]);
+
   const mutation = useMutation<{ message: string }, unknown, unknown>({
-    mutationFn: (data: unknown) => {
+    mutationFn: (data: IFormData) => {
       return fetch(formAction, {
         method: 'POST', //
         body: JSON.stringify(data),
@@ -29,14 +53,9 @@ export const WotcFormInner = ({ config: config }: { config: Partial<IWotcConfig>
     }
   });
 
-  const onChange = ({ errors, data }) => {
-    setData(data);
-    setOutput({ data, errors });
-  };
+  const onChange = (delta: IFormData) => setOutput(delta);
 
-  const onSubmit = () => {
-    mutation.mutate(data);
-  };
+  const onSubmit = () => mutation.mutate(output.data);
 
   if (mutation.isPending) {
     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: 400 }}>
@@ -59,12 +78,21 @@ export const WotcFormInner = ({ config: config }: { config: Partial<IWotcConfig>
       <div style={{ position: 'relative' }}>
         <div>
           <JsonFormsStyleContext.Provider value={{ styles }}>
-            <JsonForms ajv={ajvInstance} {...formData.data} data={data} onChange={onChange} />
-            <Box>
-              <Button variant='contained' onClick={onSubmit}>
-                Submit
-              </Button>
-            </Box>
+            <JsonForms
+              ajv={ajvInstance} //
+              {...formData.data}
+              data={output.data}
+              onChange={onChange}
+              validationMode='ValidateAndShow'
+              onSubmit={() => console.log('submit')}
+            />
+            {showSubmit ? (
+              <Box>
+                <Button fullWidth variant='contained' onClick={onSubmit}>
+                  Submit
+                </Button>
+              </Box>
+            ) : null}
           </JsonFormsStyleContext.Provider>
         </div>
 
@@ -94,7 +122,7 @@ export const WotcFormInner = ({ config: config }: { config: Partial<IWotcConfig>
           </div>
         ) : null}
 
-        {debug ? <pre>{JSON.stringify({ config, output, formAction }, null, 2)}</pre> : null}
+        {debug ? <pre>{JSON.stringify({ showSubmit, config, output, formAction }, null, 2)}</pre> : null}
       </div>
     );
   }
