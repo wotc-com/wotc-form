@@ -1,0 +1,75 @@
+<html>
+  <head>
+    <style>
+      html {
+        font-family: Arial, Helvetica, sans-serif;
+      }
+      .wotcdemo-flex-row {
+        display: flex;
+        gap: 16px;
+      }
+      .wotcdemo-flex-column {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+      .justify-content-between {
+        justify-content: space-between;
+      }
+      .wotcdemo-p-1 {
+        padding: 16px;
+      }
+      .wotcdemo-p-2 {
+        padding: 32px;
+      }
+      .border-bottom {
+        border-bottom: 1px solid #ccc;
+      }
+      main {
+        max-width: 1024px;
+        margin: 0 auto;
+      }
+      section.wotcdemo {
+        clear: both;
+      }
+      .wotcdemo-pre {
+        background-color: #222;
+        color: orange;
+        padding: 16px;
+        border-radius: 8px;
+        overflow: auto;
+      }
+      label.wotcdemo-label {
+        display: block;
+        text-wrap: nowrap;
+      }
+      input[type='text'].wotcdemo-input {
+        display: block;
+        width: 100%;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        padding: 8px;
+      }
+      .card {
+        background-color: #eee;
+        border-radius: 8px;
+        padding: 16px;
+      }
+      .table {
+        border-spacing: 10px;
+        border-collapse: separate;
+      }
+      .table td {
+        padding: 4px 0;
+      }
+      button.wotcdemo {
+        padding: 8px;
+        min-width: 100px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script src="/WotcForm.js"></script>
+  </body>
+</html>
