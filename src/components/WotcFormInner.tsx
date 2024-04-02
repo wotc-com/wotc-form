@@ -35,7 +35,7 @@ export const WotcFormInner = ({ config: config }: { config: Partial<IWotcConfig>
   const [output, setOutput] = useState<IFormData>({ data: { ...(config?.defaults ?? {}), ...(config?.data ?? {}) }, errors: [] });
   const styles = [];
   
-  const formAction = useMemo(() => buildPath([config.baseUrl, 'forms', config.entityId, config.integration, config.submission_queue]), [config]);
+  const formAction = useMemo(() => buildPath([config.baseUrl, 'forms', config.entityId, config.formId, config.submission_queue]), [config]);
 
   const showSubmit = useMemo(() => {
     const hasErrors = (output?.errors ?? []).length > 0;
@@ -45,6 +45,7 @@ export const WotcFormInner = ({ config: config }: { config: Partial<IWotcConfig>
 
   const mutation = useMutation<{ message: string }, unknown, unknown>({
     mutationFn: (data: IFormData) => {
+      console.log(formAction);
       return fetch(formAction, {
         method: 'POST', //
         body: JSON.stringify(data),
@@ -56,7 +57,7 @@ export const WotcFormInner = ({ config: config }: { config: Partial<IWotcConfig>
     }
   });
 
-  const onChange = (delta: IFormData) => setOutput(delta);
+  const onChange = (delta: IFormData) => setOutput((o) => ({...o, ...delta}));
 
   const onSubmit = () => mutation.mutate(output.data);
 

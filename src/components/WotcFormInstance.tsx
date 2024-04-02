@@ -9,19 +9,19 @@ export interface IWotcConfig {
   buttonClass: string;
   defaults: Record<string, unknown>;
   data: Record<string, unknown>;
-  integration: string;
+  //integration: string;
   submission_queue: string;
   demo: string;
 }
 
 export const DEFAULT_CONFIG: IWotcConfig = {
-  entityId: '484158277',
-  formId: '2018243164',
+  entityId: 'Q7dv2NbwgbpoPDBy',
+  formId: 'Q7dv2NbwgbpoPDBy',
   baseUrl: 'https://api.wotc.com/v1',
   buttonClass: 'btn btn-primary',
   defaults: {},
   data: {},
-  integration: '',
+  //integration: '',
   submission_queue: '',
   demo: '1'
 };
