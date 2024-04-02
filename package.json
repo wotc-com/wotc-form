@@ -1,6 +1,6 @@
 {
   "name": "wotc-form",
-  "version": "1.0.18",
+  "version": "1.0.20",
   "description": "A javascript snippet 8850 form for wotc.com.",
   "keywords": [
     "webpack",

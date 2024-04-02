@@ -10,7 +10,11 @@ export const useFormData = (config: Partial<IWotcConfig>) => {
   return useQuery({
     queryKey: ['form-data'],
     queryFn: async () => {
-      const response = await fetch(url);
+      const response = await fetch(url, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
       if (!response.ok) {
         throw new Error('Failed to fetch data');
