@@ -13,6 +13,7 @@ export const useFormData = (config: Partial<IWotcConfig>) => {
       const response = await fetch(url, {
         headers: {
           "Content-Type": "application/json",
+          "Accepts": "application/json",
         },
       });
 
