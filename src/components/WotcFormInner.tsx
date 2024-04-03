@@ -70,8 +70,7 @@ export const WotcFormInner = ({ config: config }: { config: Partial<IWotcConfig>
   if (mutation.isSuccess) {
     return (
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: 400 }}>
-        <h3>Completed! Thanks.</h3>
-        <p>{mutation.data?.message ?? ''}</p>
+        <div class="wotc-form-success" dangerouslySetInnerHTML={{__html: mutation.data?.message ?? ''}}></div>
       </div>
     );
   }
