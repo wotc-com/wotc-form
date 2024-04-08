@@ -1,6 +1,6 @@
 {
   "name": "wotc-form",
-  "version": "1.0.29",
+  "version": "1.0.33",
   "description": "A javascript snippet 8850 form for wotc.com.",
   "keywords": [
     "webpack",
@@ -92,5 +92,8 @@
   "peerDependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
+  },
+  "dependencies": {
+    "crypto-js": "^4.2.0"
   }
 }

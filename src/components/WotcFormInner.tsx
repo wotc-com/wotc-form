@@ -8,6 +8,8 @@ import React, { useMemo, useState } from 'react';
 import { buildPath } from '../utils/buildPath';
 import { useFormData } from '../utils/useFormData';
 import { IWotcConfig } from './WotcFormInstance';
+import HmacSHA256 from 'crypto-js/hmac-sha256';
+import md5 from 'crypto-js/md5';
 
 const ajvInstance = createAjv();
 
@@ -45,13 +47,14 @@ export const WotcFormInner = ({ config: config }: { config: Partial<IWotcConfig>
 
   const mutation = useMutation<{ message: string }, unknown, unknown>({
     mutationFn: (data: IFormData) => {
-      console.log(formAction);
+      const signature = HmacSHA256(JSON.stringify(data), md5(config.entityId + ":" + config.formId).toString());
       return fetch(formAction, {
         method: 'POST', //
         body: JSON.stringify(data),
         headers: {
           "Content-Type": "application/json",
           "Accept": "application/json",
+          "Signature": signature.toString(),
         }
       }).then((r) => r.json());
     }

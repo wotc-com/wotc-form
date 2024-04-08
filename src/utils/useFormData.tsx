@@ -4,8 +4,11 @@ import { useQuery } from '@tanstack/react-query';
 import fetch from 'cross-fetch';
 import { IWotcConfig } from '../components/WotcFormInstance';
 import { buildPath } from './buildPath';
+import HmacSHA256 from 'crypto-js/hmac-sha256';
+import md5 from 'crypto-js/md5';
 
 export const useFormData = (config: Partial<IWotcConfig>) => {
+  const signature = HmacSHA256(JSON.stringify(data), md5(config.entityId + ":" + config.formId).toString());
   const url = config.demo === '1' ? '/jsonform.json' : buildPath([config.baseUrl, 'forms', config.entityId, config.formId]);
   return useQuery({
     queryKey: ['form-data'],
@@ -14,6 +17,7 @@ export const useFormData = (config: Partial<IWotcConfig>) => {
         headers: {
           "Content-Type": "application/json",
           "Accept": "application/json",
+          "Signature": signature.toString(),
         },
       });
 
