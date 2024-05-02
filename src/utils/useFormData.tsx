@@ -8,7 +8,7 @@ import HmacSHA256 from 'crypto-js/hmac-sha256';
 import md5 from 'crypto-js/md5';
 
 export const useFormData = (config: Partial<IWotcConfig>) => {
-  const signature = HmacSHA256(JSON.stringify(data), md5(config.entityId + ":" + config.formId).toString());
+  const signature = HmacSHA256(JSON.stringify([]), md5(config.entityId + ":" + config.formId).toString());
   const url = config.demo === '1' ? '/jsonform.json' : buildPath([config.baseUrl, 'forms', config.entityId, config.formId]);
   return useQuery({
     queryKey: ['form-data'],

@@ -28,6 +28,9 @@ interface IFormData extends Partial<JsonFormsCore> {
       dob: string;
       ssn: string;
     };
+    veteran: {
+      veteran_unemployed: integer;
+    };
   }>;
 }
 
